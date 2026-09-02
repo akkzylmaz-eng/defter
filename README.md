@@ -25,11 +25,11 @@ makbuzu, gelir vergisi dilimleri, geçici vergi taksitleri, alacak yaşlandırma
 ve her müşterinin kendi ödeme gecikmesinden öğrenen bir nakit akışı projeksiyonu.
 
 Bu bir arayüz taslağı değil. Bütün hesap saf TypeScript fonksiyonlarında yazıldı,
-React'ten ve sabit veriden tamamen bağımsız, ve **105 testle** korunuyor.
+React'ten ve sabit veriden tamamen bağımsız, ve **130 testle** korunuyor.
 Ekrandaki her rakam bu fonksiyonlardan üretilir; hiçbiri kayıtlı değil, hiçbiri
 elle yazılmadı.
 
-### Ürünü ayıran dört karar
+### Ürünü ayıran beş karar
 
 **1 · Para kuruştur, ondalık sayı değildir.**
 Bütün tutarlar tam sayı kuruş olarak tutulur. Bu titizlik değil zorunluluk:
@@ -68,6 +68,15 @@ gecikmesini kendi kapanmış faturalarından (ortancasıyla, ortalamasıyla değ
 çizilir: öğrenen projeksiyon ve vadeye inanan projeksiyon. Aradaki fark ekranın
 bütün mevzusudur.
 
+**5 · KDV iade edilmez, devreder.**
+Bir ayın indirilecek KDV'si hesaplanan KDV'sinden büyük olduğunda devlet aradaki
+farkı geri ödemez. Fark devreden KDV olarak sonraki aya taşınır ve orada mahsup
+edilir. Bunu alacak yazmak nakit tablosunu tam o kadar şişirir. Aynı yerde ikinci
+bir tuzak var: indirilebilen KDV geri geldiği için gider, gelir vergisinden
+**KDV hariç** tutarıyla düşülür. Brütü düşüp KDV'yi ayrıca indirmek aynı parayı
+iki kez düşmektir. İndirilemiyorsa, ki binek otomobil bunun klasik örneğidir,
+KDV olmaktan çıkar ve maliyete eklenir.
+
 ### Ekranlar
 
 | Ekran | İçerik |
@@ -75,7 +84,7 @@ bütün mevzusudur.
 | **Defter** | Kesilen brüt, tahsil edilen, alacak, peşin ödenen stopaj; yıl bugün kapansaydı beyanname ne derdi; alacak yaşlandırma; işleyen gecikme faizi; müşteri yoğunlaşması |
 | **Makbuzlar** | Bütün makbuzlar; bir satıra basınca makbuzun dört satırı (brüt, stopaj, KDV, tahsil) ve gecikmişse işleyen faiz açılır |
 | **Müşteriler** | Her müşterinin öğrenilmiş ödeme gecikmesi, gününde ödeme oranı, açık bakiyesi; Herfindahl endeksiyle yoğunlaşma riski |
-| **Vergi** | Dilim dökümü (matrahı kaydırıp dilimlerin nasıl çalıştığını gör), tek oranla çarpsaydık ne çıkardı karşılaştırması, geçici vergi takvimi, ayırma oranı |
+| **Vergi** | Dilim dökümü (matrahı kaydırıp dilimlerin nasıl çalıştığını gör), tek oranla çarpsaydık ne çıkardı karşılaştırması, geçici vergi takvimi, aylık KDV beyannamesi ve devreden KDV, ayırma oranı |
 | **Nakit akışı** | Altı aylık projeksiyon: öğrenilen gecikmeye göre tahsilatlar, sabit giderler, vergi çıkışları, açığa düşülen ay |
 
 ### Mimari
@@ -84,15 +93,16 @@ bütün mevzusudur.
 engine/          alan mantığı: saf fonksiyonlar, React'i de records/'ı da bilmez
   makbuz/        serbest meslek makbuzu, net üzerinden brütleştirme
   tax/           dilimler, yıllık beyanname, kümülatif geçici vergi
+  kdv/           aylık KDV beyannamesi, devreden KDV, indirilecek KDV
   invoices/      durum türetme, yaşlandırma, gecikme faizi
   clients/       ödeme gecikmesi öğrenme, yoğunlaşma (HHI)
   cashflow/      projeksiyon, açığa düşen ay, dayanma süresi
 kit/             kuruş aritmetiği, takvim günü aritmetiği, biçimlendirme, i18n
-records/         sabit defter: müşteriler, makbuzlar, çalışma alanı
+records/         sabit defter: müşteriler, makbuzlar, giderler, çalışma alanı
   book.ts        engine ile records'un birleştiği tek yer
 paper/           parts/ (belge primitifleri) + frame/ (kabuk)
 words/           iki dilli metinler: site.ts + ui.ts
-checks/          105 test
+checks/          130 test
 app/             sayfalar
 ```
 
@@ -129,10 +139,10 @@ ageing, and a cash-flow projection that learns how late each client actually pay
 
 This is not an interface mock. All of the arithmetic lives in pure TypeScript
 functions that know nothing about React or about the fixture data, covered by
-**105 tests**. Every figure on screen is derived from those functions: none of
+**130 tests**. Every figure on screen is derived from those functions: none of
 it is stored, and none of it is typed in by hand.
 
-### The four decisions that define it
+### The five decisions that define it
 
 **1 · Money is kuruş, not a decimal.**
 Every amount is an integer number of kuruş. This is not fussiness: 20% VAT on
@@ -170,6 +180,16 @@ and books the collection there. The cash-flow screen draws both lines, the one
 that learns and the one that believes the due date. The gap between them is the
 entire point of the screen.
 
+**5 · VAT is not refunded, it carries.**
+When a month's reclaimable VAT is larger than the VAT charged to clients, the
+state does not pay the difference back. It becomes devreden KDV and offsets the
+following month. Booking it as a receivable overstates cash by exactly that
+amount. A second trap sits in the same place: because reclaimable VAT comes
+back, an expense is deducted from income tax **net of VAT**. Deducting the gross
+and reclaiming the VAT as well deducts the same money twice. Where the VAT
+cannot be reclaimed, a passenger car being the classic case, it stops being VAT
+and joins the cost.
+
 ### Screens
 
 | Screen | What it shows |
@@ -177,7 +197,7 @@ entire point of the screen.
 | **Ledger** | Gross invoiced, collected, receivable, withheld at source; what the return would say if the year closed today; receivables ageing; accrued late interest; client concentration |
 | **Receipts** | The whole receipt book; opening a row shows the four lines of the receipt (gross, withholding, VAT, collected) and the interest running on it if it is late |
 | **Clients** | Each client's learned payment lag, on-time rate and open balance, plus concentration risk by Herfindahl index |
-| **Tax** | The band-by-band breakdown, with the base on a slider so the bands can be watched working, a comparison against the flat-rate answer, the advance calendar, and the set-aside rate |
+| **Tax** | The band-by-band breakdown, with the base on a slider so the bands can be watched working, a comparison against the flat-rate answer, the advance calendar, the monthly VAT return with its carried credit, and the set-aside rate |
 | **Cash flow** | Six months out: collections placed by learned lag, fixed outgoings, tax outflows, and the month the balance runs out |
 
 ### Architecture
@@ -186,15 +206,16 @@ entire point of the screen.
 engine/          domain logic: pure functions, aware of neither React nor records/
   makbuz/        the freelance receipt, and grossing up from a target net
   tax/           bands, the annual return, cumulative advance instalments
+  kdv/           the monthly VAT return, carried credit, reclaimable VAT
   invoices/      derived state, ageing, late interest
   clients/       payment-lag learning, concentration (HHI)
   cashflow/      projection, shortfall month, runway
 kit/             kuruş arithmetic, calendar-day arithmetic, formatting, i18n
-records/         the frozen book: clients, receipts, workspace
+records/         the frozen book: clients, receipts, expenses, workspace
   book.ts        the single seam where engine and records meet
 paper/           parts/ (document primitives) + frame/ (chrome)
 words/           bilingual copy: site.ts + ui.ts
-checks/          105 tests
+checks/          130 tests
 app/             pages
 ```
 

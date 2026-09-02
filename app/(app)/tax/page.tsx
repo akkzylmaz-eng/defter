@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { day, money, moneyRound, percent, rate } from "@/kit/display";
+import { day, money, moneyRound, month, percent, rate } from "@/kit/display";
 import { lira, roundHalfUp, type Kurus } from "@/kit/money";
 import { SCHEDULE_2026, sliceByBand } from "@/engine/tax/brackets";
 import { setAsideRate } from "@/engine/tax/annual";
 import { ledger as ledgerWords, tax as words } from "@/words/ui";
-import { instalments, totals, yearToDate } from "@/records/book";
+import { instalments, totals, vat, vatFilings, yearToDate } from "@/records/book";
 import { TAX_YEAR } from "@/records/workspace";
 import { Bar, Figure, FigureCell, FigureRow, Note, Sheet, SheetHead, Tag } from "@/paper/parts/marks";
 import { Page } from "@/paper/frame/masthead";
@@ -199,6 +199,79 @@ export default function TaxPage() {
               {money(Math.max(0, yearToDate.balance), language)}
             </span>
           </p>
+        </div>
+      </Sheet>
+
+      <Sheet>
+        <SheetHead
+          title={say(words.kdvTitle)}
+          lead={say(words.kdvLead)}
+          aside={
+            <div className="text-right">
+              <p className="field">{say(words.kdvPaid)}</p>
+              <p className="figures text-lg font-semibold text-ink">
+                {moneyRound(vat.paid, language)}
+              </p>
+            </div>
+          }
+        />
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[720px] text-[13px]">
+            <thead>
+              <tr className="border-b border-ink text-left">
+                <th className="field pb-2 pl-5">{say(words.kdvMonth)}</th>
+                <th className="field pb-2 pr-4 text-right">{say(words.kdvCollected)}</th>
+                <th className="field pb-2 pr-4 text-right">{say(words.kdvDeductible)}</th>
+                <th className="field pb-2 pr-4 text-right">{say(words.kdvCarriedIn)}</th>
+                <th className="field pb-2 pr-4 text-right">{say(words.payable)}</th>
+                <th className="field pb-2 pr-5 text-right">{say(words.dueOn)}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-rule">
+              {vatFilings.map((filing) => (
+                <tr key={filing.month}>
+                  <td className="py-2.5 pl-5 font-medium text-ink">
+                    {month(filing.month, language)}
+                  </td>
+                  <td className="py-2.5 pr-4 text-right text-ink-2">
+                    {money(filing.collected, language)}
+                  </td>
+                  <td className="py-2.5 pr-4 text-right text-ink-2">
+                    -{money(filing.deductible, language)}
+                  </td>
+                  <td className="py-2.5 pr-4 text-right text-ink-3">
+                    {filing.carriedIn > 0 ? `-${money(filing.carriedIn, language)}` : "–"}
+                  </td>
+                  <td className="py-2.5 pr-4 text-right font-semibold">
+                    {filing.payable > 0 ? (
+                      <span className="text-ink">{money(filing.payable, language)}</span>
+                    ) : (
+                      <span className="text-credit">
+                        - <span className="font-normal text-ink-3">
+                          ({say(words.carried)} {money(filing.carriedOut, language)})
+                        </span>
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-2.5 pr-5 text-right text-ink-3">
+                    {day(filing.dueOn, language)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="space-y-3 border-t border-rule px-5 py-4">
+          <Note>{say(words.kdvNote)}</Note>
+          <Note>{say(words.kdvDueNote)}</Note>
+          {vat.carried > 0 ? (
+            <p className="flex items-baseline gap-2 text-[13px]">
+              <span className="field">{say(words.kdvOnAccount)}</span>
+              <span className="figures font-semibold text-credit">
+                {money(vat.carried, language)}
+              </span>
+            </p>
+          ) : null}
         </div>
       </Sheet>
 

@@ -194,6 +194,25 @@ export const tax = {
     "The gap between the marginal rate and what is already withheld at source. Zero when withholding already covers it.",
   ),
   perLira: t("her 1.000 ₺ brüt için", "per 1,000 ₺ of gross"),
+  kdvTitle: t("KDV beyannamesi", "VAT return"),
+  kdvLead: t(
+    "Müşteriye kesilen KDV ile giderlerdeki indirilecek KDV her ay karşılaştırılır. Fark ödenir; ters çıkarsa iade edilmez, devreden KDV olarak sonraki aya taşınır.",
+    "Each month sets the VAT charged to clients against the reclaimable VAT on expenses. The difference is paid; when it goes the other way nothing is refunded, and the excess carries into the next month.",
+  ),
+  kdvMonth: t("Dönem", "Period"),
+  kdvCollected: t("Hesaplanan", "Charged"),
+  kdvDeductible: t("İndirilecek", "Reclaimable"),
+  kdvCarriedIn: t("Devreden", "Brought in"),
+  kdvPaid: t("Yıl içinde ödenen KDV", "VAT paid this year"),
+  kdvOnAccount: t("Hesapta duran devreden", "Credit still on the account"),
+  kdvNote: t(
+    "Ocak'ta ekipman alındığı için indirilecek KDV hesaplanandan büyük çıkıyor. Devlet bu farkı geri ödemez; alacak olarak yazmak nakit tablosunu tam o kadar şişirir. Fark şubata devreder ve orada mahsup edilir.",
+    "January bought equipment, so its reclaimable VAT is larger than the VAT charged. The state does not pay that difference back, and booking it as a receivable overstates cash by exactly that amount. It carries into February and is offset there.",
+  ),
+  kdvDueNote: t(
+    "Beyanname takip eden ayın 28'inde verilir ve ödenir; yani KDV, iş faturalandıktan yaklaşık iki ay sonra hesaptan çıkar.",
+    "The return is filed and paid by the 28th of the following month, so the VAT leaves the account roughly two months after the work was invoiced.",
+  ),
 } as const;
 
 export const cashflow = {
