@@ -7,6 +7,11 @@
 
 Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Vitest
 
+[**Canlı demo / Live demo →**](https://defter-eta.vercel.app)
+
+[![live](https://img.shields.io/badge/demo-defter-1f2328?style=flat-square)](https://defter-eta.vercel.app)
+[![ci](https://img.shields.io/github/actions/workflow/status/akkzylmaz-eng/defter/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/akkzylmaz-eng/defter/actions)
+
 </div>
 
 ---
