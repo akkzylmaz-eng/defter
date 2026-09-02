@@ -12,6 +12,8 @@ Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Vitest
 [![live](https://img.shields.io/badge/demo-defter-1f2328?style=flat-square)](https://defter-eta.vercel.app)
 [![ci](https://img.shields.io/github/actions/workflow/status/akkzylmaz-eng/defter/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/akkzylmaz-eng/defter/actions)
 
+<img src="docs/defter-tax.png" alt="Defter tax page" width="900">
+
 </div>
 
 ---
@@ -227,3 +229,7 @@ yayımlanmıştır; açık kaynak değildir. Ayrıntılar için `LICENSE` dosyas
 
 All rights reserved. This repository is published so its source can be read and
 evaluated; it is not open-source software. See `LICENSE` for the details.
+
+---
+
+<img src="docs/defter-ledger.png" alt="Ledger" width="900">
