@@ -77,6 +77,24 @@ describe("fromNet", () => {
   it("refuses a withholding rate of 100% instead of dividing by zero", () => {
     expect(() => fromNet(lira(1), { stopaj: 1, kdv: 0.2 })).toThrow(RangeError);
   });
+
+  it("rounds a credit note away from zero, like every other amount", () => {
+    // -50 kurus grossed up is exactly -62,5. Math.round would give -62 and
+    // leave the correction a kurus short of the receipt it reverses.
+    expect(fromNet(-50).brut).toBe(-63);
+    expect(fromNet(-50).net).toBe(-50);
+  });
+
+  it("reverses a receipt exactly", () => {
+    for (const fee of [1_000, 33_333.33, 87_654.21]) {
+      const original = fromGross(lira(fee));
+      const credit = fromGross(-lira(fee));
+      expect(credit.brut + original.brut).toBe(0);
+      expect(credit.stopaj + original.stopaj).toBe(0);
+      expect(credit.kdv + original.kdv).toBe(0);
+      expect(credit.tahsil + original.tahsil).toBe(0);
+    }
+  });
 });
 
 describe("totalReceipts", () => {

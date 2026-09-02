@@ -1,4 +1,4 @@
-import { applyRate, type Kurus } from "@/kit/money";
+import { applyRate, roundHalfUp, type Kurus } from "@/kit/money";
 
 /**
  * The serbest meslek makbuzu.
@@ -62,10 +62,15 @@ export function fromGross(brut: Kurus, rates: Rates = DEFAULT_RATES): Receipt {
  * and dividing by (1 - stopaj) is the only correct answer. Multiplying the
  * target by 1.20 instead, which is the common shortcut, undershoots: 20% off a
  * larger number is more than 20% of the smaller one.
+ *
+ * The gross-up rounds with `roundHalfUp` rather than `Math.round` for the same
+ * reason every other amount in the app does. A credit note carries a negative
+ * net, and `Math.round` rounds a negative half towards zero: -62,5 kurus
+ * becomes -62, so the correction is a kurus short of the receipt it reverses.
  */
 export function fromNet(net: Kurus, rates: Rates = DEFAULT_RATES): Receipt {
   if (rates.stopaj >= 1) throw new RangeError("stopaj rate must be below 1");
-  const brut = Math.round(net / (1 - rates.stopaj));
+  const brut = roundHalfUp(net / (1 - rates.stopaj));
   return fromGross(brut, rates);
 }
 
