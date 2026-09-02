@@ -27,11 +27,11 @@ export const openingBalance = lira(186_400);
 export const monthlyExpenses = lira(24_800);
 
 /**
- * Deductible expenses booked so far this year. Kept as a running figure rather
- * than a list of receipts, because the tax engine only needs the total and a
- * fake expense ledger would be the least interesting part of this project.
+ * Expenses used to live here as a single running total. They are dated records
+ * in `records/expenses` now, because the VAT return is monthly and a total
+ * cannot be filed, and because the quarterly advance tax needs to know which
+ * expenses fell inside the quarter rather than assuming they spread evenly.
  */
-export const expensesToDate = lira(148_900);
 
 /**
  * Annual default interest rate for overdue commercial invoices. It tracks a
