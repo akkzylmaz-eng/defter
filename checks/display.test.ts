@@ -8,6 +8,14 @@ describe("money", () => {
     expect(money(lira(0.05), "tr")).toContain("0,05");
   });
 
+  it("uses the lira sign in both languages, never the three-letter code", () => {
+    // en-GB renders TRY as "TRY" unless narrowSymbol is asked for, which puts
+    // "TRY 150.00" and "₺" on the same screen meaning the same thing.
+    expect(money(lira(150), "en")).toContain("₺");
+    expect(money(lira(150), "en")).not.toContain("TRY");
+    expect(money(lira(150), "tr")).toContain("₺");
+  });
+
   it("formats negatives, which is what a refund looks like", () => {
     expect(money(-lira(7_500), "tr")).toContain("7.500,00");
     expect(money(-lira(7_500), "tr")).toMatch(/-|−/);

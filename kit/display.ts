@@ -13,11 +13,19 @@ import type { Language } from "./i18n";
 
 const LOCALE: Record<Language, string> = { tr: "tr-TR", en: "en-GB" };
 
-/** "72.000,00 ₺" in Turkish, "₺72,000.00" in English. */
+/**
+ * "72.000,00 ₺" in Turkish, "₺72,000.00" in English.
+ *
+ * `narrowSymbol` matters here. Without it, an English locale renders TRY as
+ * the three-letter code, so a screen ends up mixing "TRY 150.00" with a "₺"
+ * that came from somewhere else, and the reader has to work out whether those
+ * are the same currency.
+ */
 export function money(amount: Kurus, language: Language): string {
   return new Intl.NumberFormat(LOCALE[language], {
     style: "currency",
     currency: "TRY",
+    currencyDisplay: "narrowSymbol",
     minimumFractionDigits: 2,
   }).format(amount / KURUS_PER_LIRA);
 }
@@ -27,6 +35,7 @@ export function moneyRound(amount: Kurus, language: Language): string {
   return new Intl.NumberFormat(LOCALE[language], {
     style: "currency",
     currency: "TRY",
+    currencyDisplay: "narrowSymbol",
     maximumFractionDigits: 0,
   }).format(amount / KURUS_PER_LIRA);
 }
