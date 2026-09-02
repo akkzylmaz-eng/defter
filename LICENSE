@@ -1,0 +1,66 @@
+All Rights Reserved
+
+Copyright (c) 2026 akkzylmaz-eng
+
+This repository is published so that its source code can be read and evaluated,
+for example by prospective employers or collaborators. It is not open-source
+software, and no licence to use it is granted here.
+
+You may:
+
+  * view and read the source code in this repository;
+  * fork the repository on GitHub, to the extent GitHub's Terms of Service
+    require that ability for public repositories.
+
+You may not, without prior written permission from the copyright holder:
+
+  * copy, reproduce, publish or redistribute this code, in whole or in part;
+  * modify it, or create derivative works based on it;
+  * use it, or any part of it, in any project, product or service, whether
+    commercial or non-commercial;
+  * sublicense, sell, rent or otherwise transfer any rights in it.
+
+Third-party dependencies listed in package.json remain under their own
+licences, which are unaffected by this notice.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Permission requests: https://github.com/akkzylmaz-eng
+
+---
+
+TÜM HAKLARI SAKLIDIR
+
+Telif Hakkı (c) 2026 akkzylmaz-eng
+
+Bu depo, kaynak kodunun okunabilmesi ve incelenebilmesi için yayımlanmıştır;
+örneğin işveren adayları veya olası iş ortakları tarafından. Açık kaynak bir
+yazılım değildir ve burada herhangi bir kullanım izni verilmemektedir.
+
+Yapabilecekleriniz:
+
+  * bu depodaki kaynak kodu görüntülemek ve okumak;
+  * GitHub Hizmet Şartları'nın public depolar için gerektirdiği ölçüde depoyu
+    GitHub üzerinde fork etmek.
+
+Telif hakkı sahibinin önceden yazılı izni olmadan yapamayacaklarınız:
+
+  * kodu tamamen veya kısmen kopyalamak, çoğaltmak, yayımlamak veya dağıtmak;
+  * kodu değiştirmek veya kodtan türetilmiş çalışmalar üretmek;
+  * kodu veya bir bölümünü, ticari olsun olmasın herhangi bir projede, üründe
+    ya da hizmette kullanmak;
+  * kod üzerindeki hakları alt lisanslamak, satmak, kiralamak veya devretmek.
+
+package.json içinde listelenen üçüncü taraf bağımlılıklar kendi lisanslarına
+tabidir; bu bildirim onları etkilemez.
+
+YAZILIM, AÇIK VEYA ZIMNİ HİÇBİR GARANTİ VERİLMEKSİZİN "OLDUĞU GİBİ" sunulur.
+Telif hakkı sahibi, yazılımın kullanımından doğan hiçbir talep, zarar veya
+sorumluluktan mesul tutulamaz.
+
+İzin talepleri: https://github.com/akkzylmaz-eng

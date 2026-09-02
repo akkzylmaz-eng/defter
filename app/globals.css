@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────────────────────
+   DEFTER. A ledger, not a dashboard.
+
+   The reference is a printed document: cool white stock, black ink, hairline
+   rules that separate rather than boxes that enclose, and generous margins.
+   There are no cards with shadows here, because a card is a widget and this is
+   supposed to read as a page you could put in a folder.
+
+   One accent, plum, spent only on the current place and the single number a
+   screen is about. Everything else is ink at three weights.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --font-sans: var(--font-sans-app), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif-app), Georgia, "Times New Roman", serif;
+  --font-type: var(--font-type-app), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Almost no rounding: a ledger has corners. */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+
+  --color-stock: oklch(98.6% 0.002 250);
+  --color-sheet: oklch(100% 0 0);
+  --color-tint: oklch(96.2% 0.004 265);
+  --color-ink: oklch(18% 0.012 275);
+  --color-ink-2: oklch(44% 0.012 272);
+  --color-ink-3: oklch(60% 0.01 270);
+  --color-rule: oklch(89% 0.005 265);
+  --color-rule-2: oklch(78% 0.008 265);
+
+  --color-plum: oklch(42% 0.13 340);
+  --color-plum-soft: oklch(95% 0.025 340);
+  --color-on-plum: oklch(98% 0.006 340);
+
+  /* Ledger semantics. Credit is ink, debit is red: the convention people
+     already read without a legend. */
+  --color-credit: oklch(42% 0.11 158);
+  --color-debit: oklch(48% 0.18 25);
+  --color-flag: oklch(52% 0.13 60);
+  --color-credit-soft: oklch(95% 0.03 158);
+  --color-debit-soft: oklch(95.5% 0.025 25);
+  --color-flag-soft: oklch(96% 0.035 75);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-rule);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-stock);
+    color: var(--color-ink);
+    font-synthesis-weight: none;
+  }
+
+  /* Every figure in this app is compared against the figure above it, so all
+     of them are tabular. This one line is the difference between a table you
+     can scan down and a table you have to read. */
+  table,
+  .figures {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  ::selection {
+    background: var(--color-plum-soft);
+    color: var(--color-plum);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-plum);
+    outline-offset: 2px;
+  }
+
+  .thin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-rule-2) transparent;
+  }
+  .thin-scroll::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+  .thin-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-rule-2);
+  }
+}
+
+@layer utilities {
+  /* The masthead rule: thick over thin, the way a printed heading is set. */
+  .rule-double {
+    border-bottom: 3px solid var(--color-ink);
+    box-shadow: 0 4px 0 -3px var(--color-rule-2);
+  }
+
+  /* A small caps label, used for every field name in the document. */
+  .field {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+
+  /* Leader dots between a label and its figure, as on a printed statement. */
+  .leader {
+    background-image: radial-gradient(circle, var(--color-rule-2) 1px, transparent 1px);
+    background-position: bottom;
+    background-size: 5px 5px;
+    background-repeat: repeat-x;
+  }
+}
